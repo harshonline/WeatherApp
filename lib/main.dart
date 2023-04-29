@@ -1,79 +1,98 @@
 import 'dart:convert';
+import 'dart:js_util';
 import 'package:flutter/material.dart';
+import 'package:harsh_chaudhary/View/additional_information.dart';
+import 'package:harsh_chaudhary/View/current_weather.dart';
 import 'package:http/http.dart' as http;
+
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  List<dynamic> users = [];
-
-  apiCalling() async {
-    _counter++;
-    var uri = Uri.parse('https://randomuser.me/api/?results=$_counter');
-    final response = await http.get(uri);
-    final body = jsonDecode(response.body);
-    setState(() {
-      users = body['results'];
-    });
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(
-          Icons.shop,
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Weather App",
+          style: TextStyle(color: Colors.black, fontSize: 20),
         ),
-
-        title: Text('ghfghg'),
+        elevation: 0,
         centerTitle: true,
-        actions: [Icon(Icons.add), Icon(Icons.add)],
-        backgroundColor: Colors.red,
       ),
-      body: ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          final user = users[index];
-          final email = user['email'];
-          return ListTile(
-            title: Text(email),
-          );
-        },
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CurrentWeather(location: "London", temperature: "20"),
+            ],
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          const Text(
+            "Additional Information",
+            style: TextStyle(fontSize: 20),
+          ),
+          const Divider(),
+          const AdditionalInformation(
+            wind: 50,
+            humidity: 12,
+            feelslike: 32,
+            pressure: 1,
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        apiCalling();
-      }),
+      drawer: const Drawer(),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// apiCalling() async {
+//     _counter++;
+//     var uri = Uri.parse('https://randomuser.me/api/?results=$_counter');
+//     final response = await http.get(uri);
+//     final body = jsonDecode(response.body);
+//     setState(() {
+//       users = body['results'];
+//     });
+//   }
