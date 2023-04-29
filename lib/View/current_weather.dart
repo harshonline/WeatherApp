@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class CurrentWeather extends StatelessWidget {
   const CurrentWeather(
       {super.key, required this.location, required this.temperature});
-  final temperature;
-  final location;
+  final double temperature;
+  final String location;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -16,7 +16,7 @@ class CurrentWeather extends StatelessWidget {
           size: 40,
         ),
         Text(
-          temperature,
+          '$temperature',
           style: TextStyle(fontSize: 70),
         ),
         Text(

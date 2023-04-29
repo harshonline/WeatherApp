@@ -1,14 +1,10 @@
-import 'dart:convert';
-import 'dart:js_util';
 import 'package:flutter/material.dart';
 import 'package:harsh_chaudhary/View/additional_information.dart';
 import 'package:harsh_chaudhary/View/current_weather.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -52,7 +48,7 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              CurrentWeather(location: "London", temperature: "20"),
+              CurrentWeather(location: "London", temperature: 20),
             ],
           ),
           const SizedBox(
@@ -62,7 +58,7 @@ class _HomePageState extends State<HomePage> {
             "Additional Information",
             style: TextStyle(fontSize: 20),
           ),
-          const Divider(),
+          const Divider(color: Colors.black),
           const AdditionalInformation(
             wind: 50,
             humidity: 12,
@@ -75,18 +71,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 // apiCalling() async {
 //     _counter++;
 //     var uri = Uri.parse('https://randomuser.me/api/?results=$_counter');

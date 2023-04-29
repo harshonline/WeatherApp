@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 class AdditionalInformation extends StatelessWidget {
@@ -19,70 +17,85 @@ class AdditionalInformation extends StatelessWidget {
         const TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
     TextStyle value =
         const TextStyle(fontSize: 15, fontWeight: FontWeight.w300);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Wind",
-                  style: property,
-                ),
-                Text(
-                  "Pressure",
-                  style: property,
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "$wind",
-                  style: value,
-                ),
-                Text(
-                  "$pressure",
-                  style: value,
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Humidity",
-                  style: property,
-                ),
-                Text(
-                  "Feels Like",
-                  style: property,
-                )
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "$humidity",
-                  style: value,
-                ),
-                Text(
-                  "$feelslike",
-                  style: value,
-                ),
-              ],
-            )
-          ],
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Wind",
+                    style: property,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Pressure",
+                    style: property,
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "$wind",
+                    style: value,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "$pressure",
+                    style: value,
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Humidity",
+                    style: property,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Feels Like",
+                    style: property,
+                  )
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "$humidity",
+                    style: value,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "$feelslike",
+                    style: value,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
