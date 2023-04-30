@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:harsh_chaudhary/View/additional_information.dart';
 import 'package:harsh_chaudhary/View/current_weather.dart';
@@ -5,6 +7,7 @@ import 'package:harsh_chaudhary/View/current_weather.dart';
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,19 +19,40 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+  double wind = 0;
+  double temp = 0;
+  double feelsLike = 0;
+  int humidity = 0;
+  double pressure = 0;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  apiCalling() async {
+    print('start');
+    var uri = Uri.parse(
+        'http://api.weatherapi.com/v1/current.json?key=20daabc382f34826a9733743233004&q=new york&aqi=no');
+    final response = await http.get(uri);
+    final body = jsonDecode(response.body);
+    setState(() {
+      widget.wind = body["current"]["wind_kph"];
+      widget.temp = body["current"]["temp_c"];
+      widget.feelsLike = body["current"]["feelslike_c"];
+      widget.humidity = body["current"]["humidity"];
+      widget.pressure = body["current"]["pressure_mb"];
+    });
+    print('end');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +71,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              CurrentWeather(location: "London", temperature: 20),
+            children: [
+              CurrentWeather(location: "London", temperature: widget.temp),
             ],
           ),
           const SizedBox(
@@ -59,24 +83,16 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 20),
           ),
           const Divider(color: Colors.black),
-          const AdditionalInformation(
-            wind: 50,
-            humidity: 12,
-            feelslike: 32,
-            pressure: 1,
+          AdditionalInformation(
+            wind: widget.wind,
+            humidity: widget.humidity,
+            feelslike: widget.feelsLike,
+            pressure: widget.pressure,
           )
         ],
       ),
       drawer: const Drawer(),
+      floatingActionButton: FloatingActionButton(onPressed: apiCalling),
     );
   }
 }
-// apiCalling() async {
-//     _counter++;
-//     var uri = Uri.parse('https://randomuser.me/api/?results=$_counter');
-//     final response = await http.get(uri);
-//     final body = jsonDecode(response.body);
-//     setState(() {
-//       users = body['results'];
-//     });
-//   }

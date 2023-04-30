@@ -8,7 +8,7 @@ class AdditionalInformation extends StatelessWidget {
       required this.humidity,
       required this.pressure});
   final double wind;
-  final double humidity;
+  final int humidity;
   final double pressure;
   final double feelslike;
   @override
