@@ -31,7 +31,8 @@ class HomePage extends StatefulWidget {
   double feelsLike = 0;
   int humidity = 0;
   double pressure = 0;
-
+  String cityName = "georgia";
+  bool appbar = false;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   apiCalling() async {
     print('start');
     var uri = Uri.parse(
-        'http://api.weatherapi.com/v1/current.json?key=20daabc382f34826a9733743233004&q=new york&aqi=no');
+        'http://api.weatherapi.com/v1/current.json?key=20daabc382f34826a9733743233004&q=${widget.cityName}&aqi=no');
     final response = await http.get(uri);
     final body = jsonDecode(response.body);
     setState(() {
@@ -60,19 +61,38 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
+          // "Weather App",
           "Weather App",
           style: TextStyle(color: Colors.black, fontSize: 20),
         ),
         elevation: 0,
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  widget.appbar = !widget.appbar;
+                });
+              },
+              icon: Icon(Icons.search)),
+        ],
       ),
       body: Column(
         children: [
+          widget.appbar
+              ? TextFormField(
+                  decoration: InputDecoration(hintText: "Search by City Name"),
+                  style: TextStyle(fontSize: 20),
+                )
+              : SizedBox(
+                  height: 0,
+                ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CurrentWeather(location: "London", temperature: widget.temp),
+              CurrentWeather(
+                  location: widget.cityName, temperature: widget.temp),
             ],
           ),
           const SizedBox(
