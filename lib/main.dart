@@ -26,12 +26,15 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
+  var cityName = TextEditingController();
+  String? location;
+
+  var checkError;
   double wind = 0;
   double temp = 0;
   double feelsLike = 0;
   int humidity = 0;
   double pressure = 0;
-  String cityName = "georgia";
   bool appbar = false;
   @override
   State<HomePage> createState() => _HomePageState();
@@ -41,16 +44,34 @@ class _HomePageState extends State<HomePage> {
   apiCalling() async {
     print('start');
     var uri = Uri.parse(
-        'http://api.weatherapi.com/v1/current.json?key=20daabc382f34826a9733743233004&q=${widget.cityName}&aqi=no');
+        'http://api.weatherapi.com/v1/current.json?key=20daabc382f34826a9733743233004&q=${widget.cityName.text}&aqi=no');
     final response = await http.get(uri);
     final body = jsonDecode(response.body);
-    setState(() {
-      widget.wind = body["current"]["wind_kph"];
-      widget.temp = body["current"]["temp_c"];
-      widget.feelsLike = body["current"]["feelslike_c"];
-      widget.humidity = body["current"]["humidity"];
-      widget.pressure = body["current"]["pressure_mb"];
-    });
+    if (response.statusCode == 200) {
+      setState(() {
+        widget.checkError = response.statusCode;
+        widget.wind = body["current"]["wind_kph"];
+        widget.temp = body["current"]["temp_c"];
+        widget.feelsLike = body["current"]["feelslike_c"];
+        widget.humidity = body["current"]["humidity"];
+        widget.pressure = body["current"]["pressure_mb"];
+        widget.location = body["location"]["name"];
+      });
+    } else {
+      setState(() {
+        widget.checkError = response.statusCode;
+        widget.location = widget.cityName.text;
+        widget.wind = 0;
+        widget.temp = 0;
+        widget.feelsLike = 0;
+        widget.humidity = 0;
+        widget.pressure = 0;
+      });
+    }
+
+    // widget.location = widget.cityName.text;
+    print(widget.checkError);
+    print(response.statusCode);
     print('end');
   }
 
@@ -71,28 +92,49 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
+                if (widget.appbar == false) {
+                  widget.cityName.clear();
+                }
                 setState(() {
                   widget.appbar = !widget.appbar;
+                  if (widget.cityName.text.isNotEmpty) {
+                    apiCalling();
+                  }
                 });
+                print(widget.cityName.text);
               },
-              icon: Icon(Icons.search)),
+              icon: const Icon(Icons.search)),
         ],
       ),
       body: Column(
         children: [
           widget.appbar
               ? TextFormField(
+                  autocorrect: true,
+                  controller: widget.cityName,
                   decoration: InputDecoration(hintText: "Search by City Name"),
                   style: TextStyle(fontSize: 20),
+                  onFieldSubmitted: (value) {
+                    setState(() {
+                      widget.appbar = !widget.appbar;
+                      if (widget.cityName.text.isNotEmpty) {
+                        print(widget.cityName.text);
+                        apiCalling();
+                      }
+                    });
+                  },
                 )
-              : SizedBox(
+              : const SizedBox(
                   height: 0,
+                  width: 10,
                 ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CurrentWeather(
-                  location: widget.cityName, temperature: widget.temp),
+                  location: widget.location,
+                  temperature: widget.temp,
+                  error: widget.checkError),
             ],
           ),
           const SizedBox(
@@ -108,7 +150,7 @@ class _HomePageState extends State<HomePage> {
             humidity: widget.humidity,
             feelslike: widget.feelsLike,
             pressure: widget.pressure,
-          )
+          ),
         ],
       ),
       drawer: const Drawer(),
