@@ -42,7 +42,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   apiCalling() async {
-    print('start');
     var uri = Uri.parse(
         'http://api.weatherapi.com/v1/current.json?key=20daabc382f34826a9733743233004&q=${widget.cityName.text}&aqi=no');
     final response = await http.get(uri);
@@ -68,11 +67,6 @@ class _HomePageState extends State<HomePage> {
         widget.pressure = 0;
       });
     }
-
-    // widget.location = widget.cityName.text;
-    print(widget.checkError);
-    print(response.statusCode);
-    print('end');
   }
 
   @override
@@ -82,7 +76,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           // "Weather App",
           "Weather App",
           style: TextStyle(color: Colors.black, fontSize: 20),
@@ -101,7 +95,6 @@ class _HomePageState extends State<HomePage> {
                     apiCalling();
                   }
                 });
-                print(widget.cityName.text);
               },
               icon: const Icon(Icons.search)),
         ],
@@ -112,8 +105,9 @@ class _HomePageState extends State<HomePage> {
               ? TextFormField(
                   autocorrect: true,
                   controller: widget.cityName,
-                  decoration: InputDecoration(hintText: "Search by City Name"),
-                  style: TextStyle(fontSize: 20),
+                  decoration:
+                      const InputDecoration(hintText: "Search by City Name"),
+                  style: const TextStyle(fontSize: 20),
                   onFieldSubmitted: (value) {
                     setState(() {
                       widget.appbar = !widget.appbar;

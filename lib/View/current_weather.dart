@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CurrentWeather extends StatefulWidget {
+class CurrentWeather extends StatelessWidget {
   CurrentWeather(
       {super.key,
       required this.location,
@@ -11,46 +11,30 @@ class CurrentWeather extends StatefulWidget {
   var error;
 
   @override
-  State<CurrentWeather> createState() => _CurrentWeatherState();
-}
-
-class _CurrentWeatherState extends State<CurrentWeather> {
-  errorHandler() {
-    widget.error = 200;
-    Text(
-      "The name ${widget.location} is not valid please check again",
-      style: TextStyle(color: Colors.red),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print(widget.error);
-    print('${widget.location} efw');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           Icons.sunny,
           color: Colors.orange,
           size: 40,
         ),
         Text(
-          '${widget.temperature}',
-          style: TextStyle(fontSize: 70),
+          '$temperature',
+          style: const TextStyle(fontSize: 70),
         ),
-        widget.location != null
-            ? widget.error == 200
+        location != null
+            ? error == 200
                 ? Text(
-                    '${widget.location}',
-                    style: TextStyle(
+                    '$location',
+                    style: const TextStyle(
                         fontSize: 20,
                         color: Color.fromARGB(176, 158, 158, 158)),
                   )
-                : Text(
-                    "The name ${widget.location} is not valid please check again",
-                    style: TextStyle(color: Colors.red))
-            : Text(
+                : Text("The name $location is not valid please check again",
+                    style: const TextStyle(color: Colors.red, fontSize: 20))
+            : const Text(
                 "Please Enter City Name",
               ),
       ],
